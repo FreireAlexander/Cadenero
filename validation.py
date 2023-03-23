@@ -12,7 +12,7 @@ def is_number(number):
 	return bool(re.match(patron,number))
 
 def is_dms(angle):
-     patron = r''
+     patron = r"^([nNsS]{1})([ ]*?)([0]|[1-9]\d*)([']{1}|[°]{1})([0-9]|[1-5][0-9])([']{1})([0-9]|[1-5][0-9])([0]?|\.[0-9]\d*)((['\"]{1}))([ ]*?)([EeWwOo]{1})$"
      return bool(re.match(patron, angle, re.IGNORECASE))
 
 def isbearing(bearing):
