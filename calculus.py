@@ -3,6 +3,9 @@ import math
 
 # Formatting angle to be less than 360°
 def format_angle(angle):
+	'''
+	this function format an angle to be less than 360°
+	'''
 	while angle >= 360:
 		angle -= 360
 	return angle
@@ -18,21 +21,15 @@ def backbearing(angle):
 
 def wcb_to_rb_decimal(wcb):
 	wcb = format_angle(wcb)
-	rb = wcb
 	if wcb >= 0 and wcb < 90:
-		rb = wcb
-		rb = "N" + str(rb) + "°E"
+		return "N " + str(wcb) + " °E"
 	if wcb >= 90 and wcb < 180:
-		rb = 180 - wcb
-		rb = "S" + str(rb) + "°E"
+		return "S " + str(180 - wcb) + " °E"
 	if wcb >= 180 and wcb < 270:
-		rb = wcb - 180 
-		rb = "S" + str(rb) + "°W"
+		return "S " + str(wcb - 180) + " °W"
 	if wcb >= 270 and wcb <= 360:
-		rb = 360 - wcb
-		rb = "N" + str(rb) + "°W"
-
-	return rb
+		return "N " + str(360 - wcb) + " °E"
+	return None
 
 def rbdmstowcb(bearingdata):
 	wcb = 0
@@ -157,6 +154,8 @@ def coordinatesfrompoint(initialcoordinates,distance,wcb):
 # Function for testing
 def run():
 	value = wcb_to_rb_decimal(125.78)
+	print(value)
+	value = format_angle(125.78)
 	print(value)
 	return
 

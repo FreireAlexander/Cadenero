@@ -114,14 +114,14 @@ def Coordinates():
 
     coordinates = [0,0]   
     coordinates[0] = input("\tInput horizontal coordinates: ")
-    while not val.number_validation(coordinates[0]):
+    while not val.is_number(coordinates[0]):
         print("\tRemenber coordinates must be a number")
         coordinates[0] = input("\tInput horizontal coordinates: ")
            
     coordinates[0] = val.ToNumber(coordinates[0])
 
     coordinates[1] = input("\tInput vertical coordinates: ")
-    while not val.number_validation(coordinates[1]):
+    while not val.is_number(coordinates[1]):
         print("\tRemenber coordinates must be a number")
         coordinates[1] = input("\tInput vertical coordinates: ")
            
