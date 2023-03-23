@@ -1,35 +1,34 @@
+#Libraries
 import math
-import re
 
-# Coordinates configuration [East or X, North or Y]
+# Formatting angle to be less than 360°
+def format_angle(angle):
+	while angle >= 360:
+		angle -= 360
+	return angle
 
-def is_wcb_360(wcb):
-	while wcb >= 360:
-		wcb = wcb - 360
-	return wcb
-
-
-def backbearing(wcb):
-	wcb = is_wcb_360(wcb)
-	if wcb <= 180:
-		return wcb + 180
-	elif wcb > 180:
-		return wcb - 180
+# Funtcion to calculate backbearing angle 
+def backbearing(angle):
+	angle = format_angle(angle)
+	if angle <= 180:
+		return angle + 180
+	if angle > 180:
+		return angle - 180
 	
 
-def wcbdecimaltorbdecimal(wcb):
-	wcb = is_wcb_360(wcb)
+def wcb_to_rb_decimal(wcb):
+	wcb = format_angle(wcb)
 	rb = wcb
 	if wcb >= 0 and wcb < 90:
 		rb = wcb
 		rb = "N" + str(rb) + "°E"
-	elif wcb >= 90 and wcb < 180:
+	if wcb >= 90 and wcb < 180:
 		rb = 180 - wcb
 		rb = "S" + str(rb) + "°E"
-	elif wcb >= 180 and wcb < 270:
+	if wcb >= 180 and wcb < 270:
 		rb = wcb - 180 
 		rb = "S" + str(rb) + "°W"
-	elif wcb >= 270 and wcb <= 360:
+	if wcb >= 270 and wcb <= 360:
 		rb = 360 - wcb
 		rb = "N" + str(rb) + "°W"
 
@@ -86,7 +85,7 @@ def dmstodecimals(angle):
 	return degree
 
 def wcbdecimaltorbdms(wcb):
-	wcb = is_wcb_360(wcb)
+	wcb = format_angle(wcb)
 	rb = wcb
 	if wcb == 0:
 		rb = 0
@@ -154,3 +153,12 @@ def coordinatesfrompoint(initialcoordinates,distance,wcb):
 	coordinates[1] = round(initialcoordinates[1] + distance*math.cos(math.radians(wcb)),3)
 
 	return coordinates
+
+# Function for testing
+def run():
+	value = wcb_to_rb_decimal(125.78)
+	print(value)
+	return
+
+if __name__ == "__main__":
+	run()

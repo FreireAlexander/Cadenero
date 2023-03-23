@@ -1,15 +1,9 @@
+# Libraries
 import re
 import calculus as calc
 
-def ToNumber(number):
-	try:
-		number = float(number)
-	except ValueError:
-		number = 0
 
-	return number
-
-def positive_number_validation(number):
+def is_positive_number(number):
 	num_format = re.compile(r'^([.][0-9]*|0[.0-9]*|[1-9][0-9]*[.0-9]*)$')
 	return re.match(num_format, number)
 

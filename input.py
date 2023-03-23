@@ -1,30 +1,25 @@
 import validation as val
 import calculus as calc
-import menus
+import menu
 
-def distance():
-
+def input_distance():
     distance = input("\tInput distance [meters]: ")
-    while not val.positive_number_validation(distance):
+    while not val.is_positive_number(distance):
+        menu.clear()
         print("\tDsitances must be a number")
         distance = input("\tInput distance [meters]: ")
-        
-    distance = val.ToNumber(distance)
 
-    return distance
+    return float(distance)
 
 
-def angle():
-
-    wcb = input("\tInput angle: ")
-    while not val.positive_number_validation(wcb):
+def input_angle():
+    angle = input("\tInput angle: ")
+    while not val.is_positive_number(angle):
         print("\tAngles must be a number")
         print("!!! Remenber angles must be introduces as positive !!!")
-        wcb = input("\tInput angle: ")
-        
-    wcb = val.ToNumber(calc.is_wcb_360(float(wcb)))
+        angle = input("\tInput angle: ")
 
-    return wcb
+    return float(calc.format_angle(float(angle)))
 
 
 def angledms():
@@ -138,9 +133,17 @@ def twoCoordinates():
     print("\t Input initial point Coordinates")
     initialcoordinates = []
     initialcoordinates = Coordinates()
-    menus.clear()
+    menu.clear()
     print("\t Input final point Coordinates")
     finalcoordinates = []
     finalcoordinates = Coordinates()
 
     return initialcoordinates, finalcoordinates
+
+def run():
+    number = input_distance()
+    print(f"My number is {number}")
+    return
+
+if __name__ == "__main__":
+    run()
