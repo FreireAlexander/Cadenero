@@ -1,59 +1,26 @@
-import menu
-import apps
-
-BYEMSM ='''
-
- ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄        ▄▄▄▄▄▄▄▄▄▄  ▄         ▄ ▄▄▄▄▄▄▄▄▄▄▄ 
-▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░▌      ▐░░░░░░░░░░▌▐░▌       ▐░▐░░░░░░░░░░░▌
-▐░█▀▀▀▀▀▀▀▀▀▐░█▀▀▀▀▀▀▀█░▐░█▀▀▀▀▀▀▀█░▐░█▀▀▀▀▀▀▀█░▌     ▐░█▀▀▀▀▀▀▀█░▐░▌       ▐░▐░█▀▀▀▀▀▀▀▀▀ 
-▐░▌         ▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▌     ▐░▌       ▐░▐░▌       ▐░▐░▌          
-▐░▌ ▄▄▄▄▄▄▄▄▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▌     ▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄▄▄ 
-▐░▌▐░░░░░░░░▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▌     ▐░░░░░░░░░░▌▐░░░░░░░░░░░▐░░░░░░░░░░░▌
-▐░▌ ▀▀▀▀▀▀█░▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▌     ▐░█▀▀▀▀▀▀▀█░▌▀▀▀▀█░█▀▀▀▀▐░█▀▀▀▀▀▀▀▀▀ 
-▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▐░▌       ▐░▌     ▐░▌       ▐░▌    ▐░▌    ▐░▌          
-▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄█░▐░█▄▄▄▄▄▄▄█░▌     ▐░█▄▄▄▄▄▄▄█░▌    ▐░▌    ▐░█▄▄▄▄▄▄▄▄▄ 
-▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░░▐░░░░░░░░░░▌      ▐░░░░░░░░░░▌     ▐░▌    ▐░░░░░░░░░░░▌
- ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀        ▀▀▀▀▀▀▀▀▀▀       ▀      ▀▀▀▀▀▀▀▀▀▀▀ 
-                                                                                           
-
-'''
-
-LOGO='''
-
- _                 _                                              _      
-| | __ _ _ __   __| |  ___ _   _ _ ____   _____ _   _    ___ __ _| | ___ 
-| |/ _` | '_ \ / _` | / __| | | | '__\ \ / / _ | | | |  / __/ _` | |/ __|
-| | (_| | | | | (_| | \__ | |_| | |   \ V |  __| |_| | | (_| (_| | | (__ 
-|_|\__,_|_| |_|\__,_| |___/\__,_|_|    \_/ \___|\__, |  \___\__,_|_|\___|
-                                                |___/                    
-                                      
-'''
+import os
+from person import Person
+from car import Car
+from account import Account
+from uberx import UberX
+from model import *
 
 def main():
-    title = LOGO
-    options = ["1. Calculte Coordinates", 
-               "2. Calculate Whole Circle Bearing",
-               "3. Calculate Bearing",
-               "4. Convert decimals angles to DDMMSS and Viceversa"
-               ]
+    print("Creando nueva cuenta")
+    cuenta = Account("Freire", "1140858993")
+    print(f"Vars Cuenta 1 {vars(cuenta)}")
+    print(f"Cuenta creada con éxito de {cuenta.name} con cedula {cuenta.document}")
+    carro = Car(cuenta, "ENK489")
+    print(f"Vars Carro de la cuenta 1 {vars(carro)}")
+    print(f"El carro con placas {carro.license} con conductor {carro.name} y documento de identidad {carro.document}")
+    uberx = UberX(carro, "Onix", "2018")
+    print(f"Vars UberX {vars(uberx)}")
+    print(f"El UberX con conductor {uberx.name} con documento de identidad {uberx.document}\n")
 
-    option = len(options)
-    
-    while True:
-        choice = menu.print_menu(title, options)
-        # Application 1 Calculate Coordinates is ok
-        if choice == options[0]:
-            apps.coordinates()
-        if choice == options[1]:
-            apps.simplecalculatewcb()
-        if choice == options[2]:
-            apps.simplecalculaterb()
-        if choice == options[3]:
-            apps.simpleangleconvertion()
-        if choice == -1:
-            print(BYEMSM)
-            break
+    print("Objetos de cadenero \n")
 
+    punto = point.Point(23.45677, 100.90023223)
+    print(f"Coordenada 1 {punto.x} E y {punto.y} N")
 
 if __name__ == "__main__":
     main()
