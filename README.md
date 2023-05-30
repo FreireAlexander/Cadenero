@@ -1,6 +1,10 @@
 # Multilanguage README Pattern
-[![español](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/FreireAlexander/Cadenero/blob/master/README.md)
-[![English](https://img.shields.io/badge/lang-es-yellow.svg)](https://github.com/FreireAlexander/Cadenero/blob/master/README.en.md)
+[![English](https://img.shields.io/badge/lang-en-green.svg)](https://github.com/FreireAlexander/Cadenero/blob/master/README.en.md)
+
+# Ultimas Noticias
+
+Por ahora se han dejado establecida las bases para poder reconocer ángulos acimutales y rumbos de manera flexible y dinámica, 
+incluso se han establecido ciertas operaciones para las clases de tal manera que se pueda extraer información de estas de manera rápida.
 
 # Cadenero 0.0.0-dev0
 

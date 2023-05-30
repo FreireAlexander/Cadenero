@@ -1,2 +1,3 @@
 from .point import *
-from .angle import *
+from .wholecirclebearing import *
+from .reducedbearing import *

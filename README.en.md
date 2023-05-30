@@ -1,3 +1,6 @@
+[![Spanish](https://img.shields.io/badge/lang-es-green.svg)](https://github.com/FreireAlexander/Cadenero/blob/master/README.md)
+
+
 # Cadenero 0.0.0-dev0
 
 Cadenero is '__by now__' a console application that allows you to perform simple surveying and geoinformation computations. \
