@@ -1,2 +1,2 @@
-from .point import *
+from .points import *
 from .angles import *
