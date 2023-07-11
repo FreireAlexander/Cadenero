@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-=======
 from .points import Point
-from .wholecirclebearings import WholeCircleBearing
-from .reducedbearings import ReducedBearing
->>>>>>> c00fabc (Reviewing features for Cadenero)
+from .azimuths import Azimuth
+from .bearings import Bearing
+from .angles import Angle
+from .extras import *

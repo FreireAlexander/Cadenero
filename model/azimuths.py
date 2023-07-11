@@ -1,6 +1,6 @@
 import math
 
-class WholeCircleBearing:
+class Azimuth:
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.

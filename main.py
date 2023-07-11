@@ -1,17 +1,20 @@
-from extras import *
 from model import *
 
 def main():
-
-    for i in range(2):
-        text = input("Ingrese el ángulo: ")
-        angulo = setangle(text)
-        if angulo != None:
-            angulo.print_angle()
-            print(f"Numero de vueltas {angulo.spin_number}")
-            print(f"Numero de vueltas aproximadas {angulo.spin_number_decimal}")
-        else:
-            print("Entrada incorrecta")
+    for i in range(5):
+        angle = input(f"Ingrese el ángulo {i}: ")
+        if isBearing(angle):
+            print("Ingresaste un Rumbo")
+            angle = Angle(angle)
+            print(f"El angulo es {angle.print_angle()}")
+            print(f"El numero de vuelta es {angle.spin_number}")
+            print(f"El angulo en decimales es {angle.decimal}")
+        elif isAzimuth(angle):
+            print("Es un Azimuth")
+            angle = Angle(angle)
+            print(f"El angulo es {angle.print_angle()}")
+            print(f"El numero de vuelta es {angle.spin_number}")
+            print(f"El angulo en decimales es {angle.decimal}")
 
 if __name__ == "__main__":
     main()
