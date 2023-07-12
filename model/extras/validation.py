@@ -3,12 +3,18 @@ from .patterns import *
 
 def isAngle(text: str):
     flag = False
-    if re.match(p_integer, text):
-        flag = True
-    if re.match(p_decimal, text):
-        flag = True
     if isAzimuth(text):
-        flag = True   
+        flag = True
+    if re.match(p_integer_n, text):
+        flag = True
+    if re.match(p_decimal_n, text):
+        flag = True
+    if re.match(p_angle_d_n, text):
+        flag = True
+    if re.match(p_angle_dm_n, text):
+        flag = True
+    if re.match(p_angle_dms_n, text):
+        flag = True  
     return flag    
     
 def isAzimuth(angle):
