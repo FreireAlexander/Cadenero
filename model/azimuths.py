@@ -1,6 +1,6 @@
 import math
 
-class WholeCircleBearing:
+class Azimuth:
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -23,7 +23,7 @@ class WholeCircleBearing:
             self.spin_number = int(value[0] // 360)
             self.spin_number_decimal = round(value[0] / 360, 3)
             value[0] = value[0] - 360*self.spin_number
-              
+            
             if len(value)==1:
                 self.degree_decimals = value[0]
                 self.degree = int(math.floor(self.degree_decimals))
