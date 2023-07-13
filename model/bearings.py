@@ -1,5 +1,6 @@
 import math
 from .angles import Angle
+from .extras.validation import isBearing
 
 class Bearing(Angle):
     """
@@ -15,17 +16,10 @@ class Bearing(Angle):
     4. [Norte o Sur]numero entero + ' o ° + numero decimal o entero + ° o '  [Este u Oeste]
     5. [Norte o Sur]numero entero + ' o ° + numero entero [entre 0 a 59] + ° o ' + numero decimal o entero entre 0 y 59 + ' o ° o " [Este u Oeste]
     """
-    
-
     def __init__(self, value):
-        super().__init__(value)
-        self.type = 'Bearing'               
+        if isBearing(value):
+            super().__init__(value)
+            self.type = 'Bearing'               
+        else: 
+            raise ValueError(f'Could not convert {value} to Bearing')
     
-    
-
-    def print_angle(self):
-        """
-        Esta función imprime de manera organizada el Azimut en el formato de 
-        grados, minutos y segundos. 
-        """
-        print(f'''{self.vertical} {self.degree}°{self.minutes}'{self.seconds}" {self.horizontal}''')

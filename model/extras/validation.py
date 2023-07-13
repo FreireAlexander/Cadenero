@@ -35,6 +35,10 @@ def isBearing(angle):
     flag = False
     if re.match(p_bearing_vertical, angle):
         flag = True
+    if re.match(p_bearing_dm_vertical, angle):
+        flag = True
+    if re.match(p_bearing_dms_vertical, angle):
+        flag = True
     if re.match(p_bearing_d, angle):    
         flag = True
     if re.match(p_bearing_dm, angle):    

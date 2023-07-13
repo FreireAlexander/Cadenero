@@ -1,9 +1,10 @@
 import math
 import re
-from .rotations import Rotation
 from .extras.validation import isAngle, isBearing
 
-class Angle:
+precision = 6
+
+class Rotation:
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -18,14 +19,16 @@ class Angle:
     4. numero entero + ' o ° + numero decimal o entero + ° o ' 
     5. numero entero + ' o ° + numero entero [entre 0 a 59] + ° o ' + numero decimal o entero entre 0 y 59 + ' o ° o "
     """
-    value = None
-
-    def __init__(self, value, rotation=Rotation(0)):
-        self.rotation = rotation
+    
+    def __init__(self, value):
+        if type(value)!=type('letters'):
+            value = str(value)
         if isAngle(value) or isBearing(value):
-            if isAngle(value): self.type = 'Angle'
-            if isBearing(value): self.type = 'Bearing'
-            params = Angle.setAngle(value)
+            if isBearing(value): 
+                self.type = 'Bearing'
+            else:
+                self.type = 'Base'
+            params = Rotation.setRotation(value)
             self.sign = params['sign']
             self.spin_number = params['spin_number']
             self.spin_number_decimal = params['spin_number_decimal']   
@@ -38,36 +41,32 @@ class Angle:
             self.vertical = params['vertical']
             self.horizontal = params['horizontal']
             self.decimal = params['decimal']
-            self.standard = Angle.setStandard(self)
+            self.standard = round(Rotation.setStandard(self), precision)
         else:
-            raise ValueError(f'Could not convert {value} to Angle')
+            raise ValueError(f'{value} is not valid, must be a int, float or valid str form for an angle')
     
     def __repr__(self):
         """
-        Esta función imprime de manera organizada el Azimut en el formato de 
-        grados, minutos y segundos. 
+        Estos angulos sexagesimales siempre estaran entre 0 a 360 
         """
-        if self.type in ['Azimuth', 'Angle']:
-            return f'''{self.sign}{self.degree}°{self.minutes}'{round(self.seconds,3)}"'''
-        if self.type == 'Bearing':
-            return f'''{self.vertical}{self.degree}°{self.minutes}'{round(self.seconds,3)}{self.horizontal}"'''
+        return f'''{self.degree}°{self.minutes}'{round(self.seconds,3)}"'''
+        
 
-    def __add__(self, otherAngle):
-        if otherAngle.type in ['Azimuth', 'Angle']:
-            return Angle(str(self.decimal+otherAngle.decimal))
-        elif type(otherAngle) in [type(1), type(3.14)]:
-            return Angle(str(self.decimal+otherAngle))
+    def __add__(self, otherRotation):
+        if otherRotation.type in ['Azimuth', 'Rotation']:
+            return Rotation(str(self.decimal+otherRotation.decimal))
+        elif type(otherRotation) in [type(1), type(3.14)]:
+            return Rotation(str(self.decimal+otherRotation))
 
     def __radd__(self, other):
         if type(other) in [type(1), type(3.14)]:
-            return Angle(str(self.decimal+other))
-        elif other.type in ['Azimuth', 'Angle']:
-            return Angle(str(self.decimal+other.decimal))
+            return Rotation(str(self.decimal+other))
+        elif other.type in ['Azimuth', 'Rotation']:
+            return Rotation(str(self.decimal+other.decimal))
 
-    def setAngle(angle):
-        precision = 6
+    def setRotation(value):
         params = {
-            'raw_angle': angle,
+            'raw_Rotation': value,
             'sign': '',
             'spin_number': 0,
             'spin_number_decimal': 0,
@@ -83,10 +82,10 @@ class Angle:
             'horizontal': '',
             'decimal': 0,
         }
-        if angle == ' ':
+        if value == ' ':
             return params
-        angle, params['vertical'], params['horizontal'] = Angle.getQuadrant(angle)
-        numbers = angle.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
+        value, params['vertical'], params['horizontal'] = Rotation.getQuadrant(value)
+        numbers = value.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
         try:
             numbers.remove('')
         except:
@@ -119,34 +118,37 @@ class Angle:
             params['decimal'] = (params['degree']+params['minutes']/60+params['seconds']/3600)*-1
         else:
             params['decimal'] = (params['degree']+params['minutes']/60+params['seconds']/3600)
+        
+
         return params
     
-    def getQuadrant(angle):
-        angle = angle.lower().replace(" ", "")
+    def getQuadrant(rotation):
+        rotation = rotation.lower().replace(" ", "")
         vertical = ''
         horizontal = ''
-        if re.match(r"([sS]{1}|(sur|south))", angle):
+        if re.match(r"([sS]{1}|(sur|south))", rotation):
             vertical = 'S'
-            angle = angle.replace("sur", "").replace("south", "")
-        if re.match(r"([nN]{1}|(norte|north))", angle):
+            rotation = rotation.replace("sur", "").replace("south", "")
+        if re.match(r"([nN]{1}|(norte|north))", rotation):
             vertical = 'N'
-            angle = angle.replace("norte", "").replace("north", "")
-        if re.search(r"([wWoO]{1}|(oeste|west))", angle):
+            rotation = rotation.replace("norte", "").replace("north", "")
+        if re.search(r"([wWoO]{1}|(oeste|west))", rotation):
             horizontal = 'W'
-            angle = angle.replace("oeste", "").replace("west", "")
-        if re.search(r"([eE]{1}|(este|east))", angle):
+            rotation = rotation.replace("oeste", "").replace("west", "")
+        if re.search(r"([eE]{1}|(este|east))", rotation):
             horizontal = 'E'
-            angle = angle.replace("este", "").replace("east", "")
+            rotation = rotation.replace("este", "").replace("east", "")
         
-        angle = angle.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
-        return angle, vertical, horizontal
+        rotation = rotation.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
+        return rotation, vertical, horizontal
     
     def setStandard(self):
-        """
-        Esta función imprime de manera organizada el Azimut en el formato de 
-        grados, minutos y segundos. 
-        """
-        if self.type in ['Azimuth', 'Angle']:
-            return f'''{self.sign}{self.degree_standard}°{self.minutes}'{self.seconds}"'''
         if self.type == 'Bearing':
-            return f'''{self.vertical}{self.degree_standard}°{self.minutes}'{self.seconds}{self.horizontal}"'''
+            return self.decimal
+        else: 
+            if self.decimal < 0:
+                return 360*(abs(self.decimal)//360+1) + self.decimal
+            elif self.decimal > 360:
+                return self.decimal - 360*(abs(self.decimal)//360)
+            else:
+                return self.decimal

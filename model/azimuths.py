@@ -1,6 +1,8 @@
 import math
+from .angles import Angle
+from .extras.validation import isAzimuth
 
-class Azimuth:
+class Azimuth(Angle):
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -18,38 +20,35 @@ class Azimuth:
     value = None
 
     def __init__(self, value):
-        if type(value)==type([]):
-            value[0]=float(value[0])
-            self.spin_number = int(value[0] // 360)
-            self.spin_number_decimal = round(value[0] / 360, 3)
-            value[0] = value[0] - 360*self.spin_number
-            
-            if len(value)==1:
-                self.degree_decimals = value[0]
-                self.degree = int(math.floor(self.degree_decimals))
-                self.minutes_decimals = round((self.degree_decimals - self.degree)*60,3)
-                self.minutes = int(math.floor(self.minutes_decimals))
-                self.seconds = round(float((self.minutes_decimals - self.minutes)*60),3)
-                self.decimal = (self.degree+self.minutes/60+self.seconds/3600)
-            if len(value)==2:
-                self.degree_decimals = value[0]
-                self.degree = int(math.floor(self.degree_decimals))
-                self.minutes_decimals = round(float(value[1]),3)
-                self.minutes = int(math.floor(self.minutes_decimals))
-                self.seconds = round(float((self.minutes_decimals - self.minutes)*60),3)
-                self.decimal = (self.degree+self.minutes/60+self.seconds/3600)
-            if len(value)==3:
-                self.degree_decimals = value[0]
-                self.degree = int(self.degree_decimals)
-                self.minutes_decimals = float(value[1])
-                self.minutes = int(self.minutes_decimals)
-                self.seconds = round(float(value[2]),3)
-                self.decimal = (self.degree+self.minutes/60+self.seconds/3600)
+        if isAzimuth(value):
+            super().__init__(value, 0)
+            self.type = 'Azimuth' 
+            self.degree = Azimuth.setAzimuth(self)              
+        else:
+            raise ValueError(f'Could not convert {value} to Azimuth')
     
-    def print_angle(self):
-        """
-        Esta función imprime de manera organizada el Azimut en el formato de 
-        grados, minutos y segundos. 
-        """
-        print(f'''{self.degree}°{self.minutes}'{self.seconds}"''')
+    def __add__(self, otherAngle):
+        if otherAngle.type in ['Azimuth', 'Angle']:
+            return Azimuth(str(setDecimal(self.decimal+otherAngle.decimal)))
+        elif type(otherAngle) in [type(1), type(3.14)]:
+            return Azimuth(str(setDecimal(self.decimal+otherAngle)))
+    
+    def __radd__(self, other):
+        if type(other) in [type(1), type(3.14)]:
+            return Azimuth(str(setDecimal(self.decimal+other)))
+        elif other.type in ['Azimuth', 'Angle']:
+            return Azimuth(str(setDecimal(self.decimal+other.decimal)))
+
+    def setAzimuth(self):
+        if self.degree > 360 :
+            return self.degree_standard
+        else:
+            return self.degree
+
+def setDecimal(decimal):
+    if decimal < 0 :
+        return 360*(abs(decimal)//360+1) + decimal
+    else:
+        return decimal
+    
     
