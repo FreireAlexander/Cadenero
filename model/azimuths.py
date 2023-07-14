@@ -1,6 +1,6 @@
 import math
 from .angles import Angle
-from .extras.validation import isAzimuth
+from .tools import isAzimuth
 
 class Azimuth(Angle):
     """

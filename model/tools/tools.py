@@ -1,4 +1,6 @@
 
+import re
+from .validators import isAngle, isBearing
 
 def setSexagesimal(angle):
     try:
@@ -30,4 +32,27 @@ def toSexagesimal(angle):
         return f'''{res['sign']}{res['degree']}°{res['minutes']}'{res['seconds']}"'''
     except:
         raise ValueError(f" {angle} must be a int or float")
+
+def getQuadrant(meridian):
+    if isAngle(meridian) or isBearing(meridian):
+        meridian = meridian.lower().replace(" ", "")
+        vertical = ''
+        horizontal = ''
+        if re.search(r"([sS]{1}|(sur|south))", meridian):
+            vertical = 'S'
+            meridian = meridian.replace("sur", "").replace("south", "")
+        if re.search(r"([nN]{1}|(norte|north))", meridian):
+            vertical = 'N'
+            meridian = meridian.replace("norte", "").replace("north", "")
+        if re.search(r"([wWoO]{1}|(oeste|west))", meridian):
+            horizontal = 'W'
+            meridian = meridian.replace("oeste", "").replace("west", "")
+        if re.search(r"([eE]{1}|(este|east))", meridian):
+            horizontal = 'E'
+            meridian = meridian.replace("este", "").replace("east", "")
+        
+        meridian = meridian.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
+        return meridian, vertical, horizontal
+    else:
+        raise ValueError(f"{meridian} is not valid must be an angle or bearing")
 

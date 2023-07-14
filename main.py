@@ -64,9 +64,11 @@ def test_2():
         print('lo anterior no se pudo')
     for i in range(6):
         angle = input(f"Ingresa el angulo {i+1}: ")
+        if isAzimuth(angle): 
+            print("Es Azimuth")
         angulo = None
         try:
-            angulo = Rotation(angle)
+            angulo = Meridian(angle)
         except:
             print(f"El valor {angle} no es valido...")
         if angulo != None:
@@ -78,8 +80,17 @@ def test_2():
             print(f"Imprimiento angulo estandard {toSexagesimal(angulo.standard)}")
 
 
+def test_3():
+    for i in range(6):
+        angle = input(f"Ingresa el angulo {i+1}: ")
+        try:
+            value, horizontal, vertical = getQuadrant(angle)
+            print(f"el valor es {value}, la hor: {horizontal} y la vert {vertical}")
+        except:
+            print("Te equivocaste")
+
 def main():
-    test_2()
+    test_3()
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 import math
 from .angles import Angle
-from .extras.validation import isBearing
+from .tools import isBearing
 
 class Bearing(Angle):
     """

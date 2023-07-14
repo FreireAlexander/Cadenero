@@ -1,7 +1,7 @@
 import math
 import re
-from .rotations import Rotation
-from .extras.validation import isAngle, isBearing
+from .meridians import Meridian
+from .tools import isAngle, isBearing
 
 class Angle:
     """
@@ -20,8 +20,8 @@ class Angle:
     """
     value = None
 
-    def __init__(self, value, rotation=Rotation(0)):
-        self.rotation = rotation
+    def __init__(self, value, meridian=Meridian(0)):
+        self.rotation = meridian 
         if isAngle(value) or isBearing(value):
             if isAngle(value): self.type = 'Angle'
             if isBearing(value): self.type = 'Bearing'

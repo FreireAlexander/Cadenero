@@ -1,10 +1,10 @@
 import math
 import re
-from .extras.validation import isAngle, isBearing
+from .tools import isAngle, isBearing, isAzimuth
 
 precision = 6
 
-class Rotation:
+class Meridian:
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -26,9 +26,11 @@ class Rotation:
         if isAngle(value) or isBearing(value):
             if isBearing(value): 
                 self.type = 'Bearing'
-            else:
-                self.type = 'Base'
-            params = Rotation.setRotation(value)
+            elif isAngle(value):
+                self.type = 'Angle'
+            elif isAzimuth(value):
+                self.type = 'Azimuth'
+            params = Meridian.setMeridian(value)
             self.sign = params['sign']
             self.spin_number = params['spin_number']
             self.spin_number_decimal = params['spin_number_decimal']   
@@ -41,7 +43,7 @@ class Rotation:
             self.vertical = params['vertical']
             self.horizontal = params['horizontal']
             self.decimal = params['decimal']
-            self.standard = round(Rotation.setStandard(self), precision)
+            self.standard = round(Meridian.setStandard(self), precision)
         else:
             raise ValueError(f'{value} is not valid, must be a int, float or valid str form for an angle')
     
@@ -52,21 +54,21 @@ class Rotation:
         return f'''{self.degree}°{self.minutes}'{round(self.seconds,3)}"'''
         
 
-    def __add__(self, otherRotation):
-        if otherRotation.type in ['Azimuth', 'Rotation']:
-            return Rotation(str(self.decimal+otherRotation.decimal))
-        elif type(otherRotation) in [type(1), type(3.14)]:
-            return Rotation(str(self.decimal+otherRotation))
+    def __add__(self, otherMeridian):
+        if otherMeridian.type in ['Azimuth', 'Meridian']:
+            return Meridian(str(self.decimal+otherMeridian.decimal))
+        elif type(otherMeridian) in [type(1), type(3.14)]:
+            return Meridian(str(self.decimal+otherMeridian))
 
     def __radd__(self, other):
         if type(other) in [type(1), type(3.14)]:
-            return Rotation(str(self.decimal+other))
-        elif other.type in ['Azimuth', 'Rotation']:
-            return Rotation(str(self.decimal+other.decimal))
+            return Meridian(str(self.decimal+other))
+        elif other.type in ['Azimuth', 'Meridian']:
+            return Meridian(str(self.decimal+other.decimal))
 
-    def setRotation(value):
+    def setMeridian(value):
         params = {
-            'raw_Rotation': value,
+            'raw_Meridian': value,
             'sign': '',
             'spin_number': 0,
             'spin_number_decimal': 0,
@@ -84,7 +86,7 @@ class Rotation:
         }
         if value == ' ':
             return params
-        value, params['vertical'], params['horizontal'] = Rotation.getQuadrant(value)
+        value, params['vertical'], params['horizontal'] = Meridian.getQuadrant(value)
         numbers = value.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
         try:
             numbers.remove('')
@@ -122,25 +124,25 @@ class Rotation:
 
         return params
     
-    def getQuadrant(rotation):
-        rotation = rotation.lower().replace(" ", "")
+    def getQuadrant(meridian):
+        meridian = meridian.lower().replace(" ", "")
         vertical = ''
         horizontal = ''
-        if re.match(r"([sS]{1}|(sur|south))", rotation):
+        if re.match(r"([sS]{1}|(sur|south))", meridian):
             vertical = 'S'
-            rotation = rotation.replace("sur", "").replace("south", "")
-        if re.match(r"([nN]{1}|(norte|north))", rotation):
+            meridian = meridian.replace("sur", "").replace("south", "")
+        if re.match(r"([nN]{1}|(norte|north))", meridian):
             vertical = 'N'
-            rotation = rotation.replace("norte", "").replace("north", "")
-        if re.search(r"([wWoO]{1}|(oeste|west))", rotation):
+            meridian = meridian.replace("norte", "").replace("north", "")
+        if re.search(r"([wWoO]{1}|(oeste|west))", meridian):
             horizontal = 'W'
-            rotation = rotation.replace("oeste", "").replace("west", "")
-        if re.search(r"([eE]{1}|(este|east))", rotation):
+            meridian = meridian.replace("oeste", "").replace("west", "")
+        if re.search(r"([eE]{1}|(este|east))", meridian):
             horizontal = 'E'
-            rotation = rotation.replace("este", "").replace("east", "")
+            meridian = meridian.replace("este", "").replace("east", "")
         
-        rotation = rotation.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
-        return rotation, vertical, horizontal
+        meridian = meridian.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
+        return meridian, vertical, horizontal
     
     def setStandard(self):
         if self.type == 'Bearing':
