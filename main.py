@@ -82,10 +82,14 @@ def test_2():
 
 def test_3():
     for i in range(6):
+        print(toSexagesimal(-361))
         angle = input(f"Ingresa el angulo {i+1}: ")
+        
         try:
-            value, horizontal, vertical = getQuadrant(angle)
-            print(f"el valor es {value}, la hor: {horizontal} y la vert {vertical}")
+            dms = getDMS(angle)
+            print(f"el valor es {dms['Bearing']}, la hor: {dms['horizontal']} y la vert {dms['vertical']}")
+            
+
         except:
             print("Te equivocaste")
 

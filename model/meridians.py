@@ -1,6 +1,7 @@
 import math
 import re
 from .tools import isAngle, isBearing, isAzimuth
+from .tools import setAngle
 
 precision = 6
 
@@ -30,7 +31,7 @@ class Meridian:
                 self.type = 'Angle'
             elif isAzimuth(value):
                 self.type = 'Azimuth'
-            params = Meridian.setMeridian(value)
+            params = Meridian.setAngle(value)
             self.sign = params['sign']
             self.spin_number = params['spin_number']
             self.spin_number_decimal = params['spin_number_decimal']   
@@ -66,63 +67,8 @@ class Meridian:
         elif other.type in ['Azimuth', 'Meridian']:
             return Meridian(str(self.decimal+other.decimal))
 
-    def setMeridian(value):
-        params = {
-            'raw_Meridian': value,
-            'sign': '',
-            'spin_number': 0,
-            'spin_number_decimal': 0,
-            'decimal': 0, 
-            'degree_decimals': 0,
-            'degree_standard': 0,
-            'degree': 0,
-            'minutes_decimals': 0,
-            'minutes': 0,
-            'seconds_decimals': 0,
-            'seconds': 0,
-            'vertical': '',
-            'horizontal': '',
-            'decimal': 0,
-        }
-        if value == ' ':
-            return params
-        value, params['vertical'], params['horizontal'] = Meridian.getQuadrant(value)
-        numbers = value.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
-        try:
-            numbers.remove('')
-        except:
-            pass
-        degree=float(numbers[0])
-        params['spin_number'] = int(abs(degree)// 360)
-        params['spin_number_decimal'] = round(abs(degree) / 360, 3)
-        params['degree_standard'] = int(math.floor(abs(degree) - 360*params['spin_number']))
-        if len(numbers)==1:
-            params['degree_decimals'] = abs(degree)
-            params['degree'] = int(math.floor(params['degree_decimals']))
-            params['minutes_decimals'] = round((params['degree_decimals'] - params['degree'])*60,precision)
-            params['minutes'] = int(math.floor(params['minutes_decimals']))
-            params['seconds'] = round(float((params['minutes_decimals'] - params['minutes'])*60),precision)
-        if len(numbers)==2:
-            params['degree_decimals'] = abs(degree)
-            params['degree'] = int(math.floor(params['degree_decimals']))
-            params['minutes_decimals'] = round(float(numbers[1]),precision)
-            params['minutes'] = int(math.floor(params['minutes_decimals']))
-            params['seconds'] = round(float((params['minutes_decimals'] - params['minutes'])*60),precision)
-        if len(numbers)==3:
-            params['degree_decimals'] = abs(degree)
-            params['degree'] = int(params['degree_decimals'])
-            params['minutes_decimals'] = float(numbers[1])
-            params['minutes'] = int(params['minutes_decimals'])
-            params['seconds'] = round(float(numbers[2]),precision)
-        
-        if degree < 0 or numbers[0]=='-0':
-            params['sign'] = '-'
-            params['decimal'] = (params['degree']+params['minutes']/60+params['seconds']/3600)*-1
-        else:
-            params['decimal'] = (params['degree']+params['minutes']/60+params['seconds']/3600)
-        
-
-        return params
+    def setAngle(value):
+        return setAngle(value)
     
     def getQuadrant(meridian):
         meridian = meridian.lower().replace(" ", "")

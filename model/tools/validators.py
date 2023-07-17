@@ -1,7 +1,8 @@
 import re
 from .patterns import *
 
-def isAngle(angle: str):
+def isAngle(angle):
+    angle = str(angle)
     flag = False
     if isPositiveAngle(angle):
         flag = True
@@ -9,7 +10,8 @@ def isAngle(angle: str):
         flag = True 
     return flag    
 
-def isPositiveAngle(angle: str):
+def isPositiveAngle(angle):
+    angle = str(angle)
     flag = False
     if re.match(p_integer, angle):
         flag = True
@@ -23,7 +25,8 @@ def isPositiveAngle(angle: str):
         flag = True
     return flag
 
-def isNegativeAngle(angle: str):
+def isNegativeAngle(angle):
+    angle = str(angle)
     flag = False
     if re.match(p_integer_n, angle):
         flag = True
@@ -38,6 +41,7 @@ def isNegativeAngle(angle: str):
     return flag
 
 def isAzimuth(angle):
+    angle = str(angle)
     flag = False
     if re.match(p_azimuth_integer, angle):
         flag = True
@@ -52,6 +56,7 @@ def isAzimuth(angle):
     return flag   
 
 def isBearing(angle):
+    angle = str(angle)
     flag = False
     if re.match(p_bearing_vertical, angle):
         flag = True
