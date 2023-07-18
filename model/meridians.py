@@ -33,11 +33,11 @@ class Meridian:
                 self.type = 'Azimuth'
             params = Meridian.setAngle(value)
             self.sign = params['sign']
-            self.spin_number = params['spin_number']
-            self.spin_number_decimal = params['spin_number_decimal']   
+            self.rotations = params['rotations']
+            self.rotations_decimal = params['rotations_decimal']   
             self.degree_decimals = params['degree_decimals']
             self.degree = params['degree']
-            self.degree_standard = params['degree_standard']
+            self.degree_standard = params['Standard']
             self.minutes_decimals = params['minutes_decimals']
             self.minutes = params['minutes']
             self.seconds = params['seconds']

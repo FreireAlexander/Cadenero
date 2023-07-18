@@ -126,7 +126,7 @@ p_bearing_dm_vertical   = re.compile(r"""
 
 p_bearing_dm    = re.compile(r"""  
     ^([nNsS]{1}|(sur|norte|south|north))\s*
-    (([0-9])|([1-8][0-9])|(90))
+    (([0-9])|([1-8][0-9])|(89))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
     (([0-9]\.\d+)|([0-9])|([1-5][0-9]\.\d+)|([1-5][0-9]))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
@@ -134,16 +134,31 @@ p_bearing_dm    = re.compile(r"""
     $
     |
     ^([nNsS]{1}|(sur|norte|south|north))\s*
-    (([0-9])|([1-8][0-9])|(90))
+    (([0-9])|([1-8][0-9])|(89))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
     (([0-9]\.\d+)|([0-9])|([1-5][0-9]\.\d+)|([1-5][0-9]))\s*
+    ([eEwWoO]{1}|(este|oeste|east|west))\s*
+    $
+    |
+    ^([nNsS]{1}|(sur|norte|south|north))\s*
+    (90)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    ([eEwWoO]{1}|(este|oeste|east|west))\s*
+    $
+    |
+    ^([nNsS]{1}|(sur|norte|south|north))\s*
+    (90)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)\s*
     ([eEwWoO]{1}|(este|oeste|east|west))\s*
     $
     """, re.VERBOSE | re.IGNORECASE)
 
 p_bearing_dms   = re.compile(r"""  
     ^([nNsS]{1}|(sur|norte|south|north))\s*
-    (([0-9])|([1-8][0-9])|(90))
+    (([0-9])|([1-8][0-9])|(89))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
     (([0-9])|([1-5][0-9]))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
@@ -153,7 +168,26 @@ p_bearing_dms   = re.compile(r"""
     $
     |
     ^([nNsS]{1}|(sur|norte|south|north))\s*
-    (([0-9])|([1-8][0-9])|(90))
+    (90)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+|"|"\s+|\s+"|\s+"\s+)
+    ([eEwWoO]{1}|(este|oeste|east|west))\s*
+    $
+    |
+    ^([nNsS]{1}|(sur|norte|south|north))\s*
+    (90)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)
+    (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
+    (0)\s*
+    ([eEwWoO]{1}|(este|oeste|east|west))\s*
+    $
+    |
+    ^([nNsS]{1}|(sur|norte|south|north))\s*
+    (([0-9])|([1-8][0-9])|(89))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
     (([0-9])|([1-5][0-9]))
     (°|°\s+|\s+°|\s+°\s+|'|'\s+|\s+'|\s+'\s+)
