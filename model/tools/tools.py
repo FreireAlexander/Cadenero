@@ -5,8 +5,11 @@ from .validators import isAngle, isBearing, isAzimuth
 
 precision = 6
 
-
 def getQuadrant(value):
+    """
+    Esta función permite extraer el cuadrante del valor
+    digitado, si no es un Rumbo, regresará dos cadenas vacias
+    """
     value = str(value)
     if isAngle(value) or isBearing(value):
         value = value.lower().replace(" ", "")
@@ -22,34 +25,37 @@ def getQuadrant(value):
             horizontal = 'E'
         return vertical, horizontal
     else:
-        raise ValueError(f"{value} is not valid must be an Angle or bearing")
+        raise ValueError(f"{value} is not valid must be an Angle or Bearing")
 
 def setQuadrant(decimal):
-    horizontal, vertical = '', ''
-    if decimal == 0 or decimal == 360 :
-        bearing = 0
-        vertical = 'N'
-    if decimal > 0 and decimal <=90 :
-        bearing = decimal
-        vertical = 'N'
-        horizontal = 'E'
-    if decimal > 90 and decimal < 180 :
-        bearing = 180 - decimal
-        vertical = 'S'
-        horizontal = 'E'
-    if decimal == 180 :
-        bearing = 0
-        vertical = 'S'
-    if decimal > 180 and decimal <= 270 :
-        bearing = decimal - 180
-        vertical = 'S'
-        horizontal = 'W'
-    if decimal > 270 and decimal < 360 :
-        bearing = 360 - decimal
-        vertical = 'N'
-        horizontal = 'W'
+    if type(decimal) in [type(1), type(2.3)]:
+        horizontal, vertical = '', ''
+        if decimal == 0 or decimal == 360 :
+            bearing = 0
+            vertical = 'N'
+        if decimal > 0 and decimal <=90 :
+            bearing = decimal
+            vertical = 'N'
+            horizontal = 'E'
+        if decimal > 90 and decimal < 180 :
+            bearing = 180 - decimal
+            vertical = 'S'
+            horizontal = 'E'
+        if decimal == 180 :
+            bearing = 0
+            vertical = 'S'
+        if decimal > 180 and decimal <= 270 :
+            bearing = decimal - 180
+            vertical = 'S'
+            horizontal = 'W'
+        if decimal > 270 and decimal < 360 :
+            bearing = 360 - decimal
+            vertical = 'N'
+            horizontal = 'W'
 
-    return bearing, vertical, horizontal
+        return bearing, vertical, horizontal
+    else:
+        raise ValueError(f"{angle} is not valid, it must be an Angle or Bearing input")
 
 def BearingToAzimuth(decimal, horizontal, vertical):
     azimuth = 0 
@@ -68,66 +74,75 @@ def BearingToAzimuth(decimal, horizontal, vertical):
     
     return azimuth
 
-def getValues(value):
-    value = str(value)
-    if isAngle(value) or isBearing(value):
-        value = value.lower().replace(" ", "")
-        value = value.replace("sur", "").replace("south", "")
-        value = value.replace("norte", "").replace("north", "")
-        value = value.replace("oeste", "").replace("west", "")
-        value = value.replace("este", "").replace("east", "")
-        value = value.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
-        value = value.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
+def getValues(angle):
+    """
+    Esta función separa los valores de los grados, minutos y segundos 
+    digitados por el usuario
+    """
+    angle = str(angle)
+    if isAngle(angle) or isBearing(angle):
+        angle = angle.lower().replace(" ", "")
+        angle = angle.replace("sur", "").replace("south", "")
+        angle = angle.replace("norte", "").replace("north", "")
+        angle = angle.replace("oeste", "").replace("west", "")
+        angle = angle.replace("este", "").replace("east", "")
+        angle = angle.replace("s", "").replace("n", "").replace("w", "").replace("o", "").replace("e", "")
+        angle = angle.replace(" ", "").replace("'", "°").replace('"', '°').replace("°", " ").split(' ')
         try:
-            value.remove('')
+            angle.remove('')
         except:
             pass
-        return value
+        return angle
     else:
-        raise ValueError(f"{value} is not valid must be an Angle or bearing")
+        raise ValueError(f"{angle} is not valid, it must be an Angle or Bearing input")
 
 def decimalToStandard(angle):
-    spin = abs(angle)//360
-    if angle < 0 :
-        spin = spin + 1
-        return 360*spin + angle
-    elif angle > 360 :
-        return angle - 360*spin
-    else:
-        return angle
+    try:
+        spin = abs(angle)//360
+        if angle < 0 :
+            spin = spin + 1
+            return 360*spin + angle
+        elif angle > 360 :
+            return angle - 360*spin
+        else:
+            return angle
+    except:
+        raise ValueError(f"{angle} is not valid, it must be an intteger or float")
 
 def setSexageximal(angle):
-    if isAngle(angle):
-        try:
-            res = {
-                        'sign': '',
-                        'degree': 0,
-                        'degree_decimal': 0,
-                        'minutes': 0,
-                        'minutes_decimal': 0,
-                        'seconds': 0,
-                        'seconds_decimal': 0
-                }    
-            res['degree_decimal'] = abs(angle)
-            res['degree'] = int(math.floor(res['degree_decimal']))
-            res['minutes_decimal'] = round((res['degree_decimal'] - res['degree'])*60, precision)
-            res['minutes'] = int(math.floor(res['minutes_decimal']))
-            res['seconds_decimal']= round((res['minutes_decimal'] - res['minutes'])*60, precision)
-            res['seconds']= round(res['seconds_decimal'],3)
-            if angle < 0: res['sign']='-'
-            return f'''{res['sign']}{res['degree']}°{res['minutes']}'{res['seconds']}"'''
-        except:
-            raise ValueError(f" {angle} must be a int or float")
+    if type(angle) in [type(1), type(2.3)]:
+        res = {
+                    'sign': '',
+                    'degree': 0,
+                    'degree_value': 0,
+                    'minutes': 0,
+                    'minutes_value': 0,
+                    'seconds': 0,
+                    'seconds_value': 0
+            }    
+        res['degree_value'] = abs(angle)
+        res['degree'] = int(math.floor(res['degree_value']))
+        res['minutes_value'] = round((res['degree_value'] - res['degree'])*60, precision)
+        res['minutes'] = int(math.floor(res['minutes_value']))
+        res['seconds_value']= round((res['minutes_value'] - res['minutes'])*60, precision)
+        res['seconds']= round(res['seconds_value'],3)
+        if angle < 0: res['sign']='-'
+        return f'''{res['sign']}{res['degree']}°{res['minutes']}'{res['seconds']}"'''
     else:
-        raise ValueError(f"{angle} is not valid must be an Angle or bearing")
+        raise ValueError(f"{angle} must be an integer or float")
 
-def setAngle(angle):
-    angle = str(angle)
+
+def setAttributes(angle):
+    """
+    Esta Función permite calcular los atributos de un ángulo, 
+    desde, azimuths, rumbos, angulo en sentido de las manecillas del reloj, 
+    equivalente en radianes entre otro.
+    """
     numbers = getValues(angle)
     attrs = {
             'sign': '',
             'rotations': 0,
-            'rotations_decimal': 0,
+            'rotations_value': 0,
             'degree_decimals': 0,
             'degree': 0,
             'minutes_decimals': 0,
@@ -136,18 +151,22 @@ def setAngle(angle):
             'seconds': 0,
             'vertical': '',
             'horizontal': '',
-            'decimal': 0,
-            'decimal_standard': 0,
-            'Raw': None,
             'Standard': None,
             'Counter': None,
             'Angle': None,
+            'Angle_decimal': None,
+            'value': 0,
             'Bearing': None,
-            'Azimuth': None
-        }
-    degree = float(numbers[0])
+            'Bearing_decimal': None,
+            'Bearing_value': 0,
+            'Azimuth': None,
+            'Azimuth_decimal': None,
+            'Azimuth_value': 0,
+            'Radians': 0
+            }
+    degree = round(float(numbers[0]),6)
     attrs['rotations'] = abs(degree)// 360
-    attrs['rotations_decimal'] = round(abs(degree) / 360, 3)
+    attrs['rotations_value'] = round(abs(degree) / 360, 3)
     if len(numbers) == 1:
         attrs['degree_decimals'] = abs(degree)
         attrs['degree'] = int(math.floor(attrs['degree_decimals']))
@@ -172,28 +191,32 @@ def setAngle(angle):
     
     if degree < 0 or numbers[0]=='-0':
         attrs['sign'] = '-'
-        attrs['decimal'] = (attrs['degree']+attrs['minutes']/60+attrs['seconds']/3600)*-1
-        print(type(attrs['decimal']))
+        attrs['value'] = (attrs['degree']+attrs['minutes']/60+attrs['seconds']/3600)*-1
     else:
-        attrs['decimal'] = attrs['degree']+attrs['minutes']/60+attrs['seconds']/3600
+        attrs['value'] = attrs['degree']+attrs['minutes']/60+attrs['seconds']/3600
     
-    standard = decimalToStandard(attrs['decimal'])
-    
-    attrs['Raw'] =  f'''{attrs['vertical']} {setSexageximal(attrs['decimal'])} {attrs['horizontal']}'''
+    attrs['Angle'] = f'''{attrs['vertical']} {setSexageximal(attrs['value'])} {attrs['horizontal']}'''
+    attrs['Angle_decimal'] = f'''{attrs['vertical']} {round(attrs['value'],4)}° {attrs['horizontal']}'''
+    standard = decimalToStandard(attrs['value'])
 
     if isAzimuth(angle):
-        azimuth = attrs['decimal']
-        attrs['Azimuth'] = setSexageximal(attrs['decimal'])
+        azimuth = attrs['value']
+        attrs['Azimuth'] = setSexageximal(attrs['value'])
     else:
         if isBearing(angle):
-            azimuth = BearingToAzimuth(attrs['decimal'], attrs['horizontal'], attrs['vertical'])
+            azimuth = BearingToAzimuth(attrs['value'], attrs['horizontal'], attrs['vertical'])
             attrs['Azimuth'] = setSexageximal(azimuth)
         if isAngle(angle):
             azimuth = standard
             attrs['Azimuth'] = setSexageximal(azimuth)
     
+    attrs['Radians'] = math.radians(azimuth)
+    attrs['Azimuth_value'] = azimuth
+    attrs['Azimuth_decimal'] = f"{round(azimuth, 4)}°"
+
     if isBearing(angle):
-        attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(attrs['decimal'])} {attrs['horizontal']}'''
+        bearing = attrs['value']
+        attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(attrs['value'])} {attrs['horizontal']}'''
     else:
         if isAngle(angle):
             bearing, attrs['vertical'], attrs['horizontal'] = setQuadrant(standard)
@@ -202,9 +225,12 @@ def setAngle(angle):
             bearing, attrs['vertical'], attrs['horizontal'] = setQuadrant(standard)
             attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(bearing)} {attrs['horizontal']}'''
     
+    attrs['Bearing_value'] = bearing
+    attrs['Bearing_decimal'] = f"{attrs['vertical']} {round(bearing,4)}° {attrs['horizontal']}"
+
     attrs['Standard'] = attrs['Azimuth']
     attrs['Counter'] = setSexageximal(azimuth-360)
-    attrs['Angle'] = attrs['Raw']
+    
     
     return attrs
 
