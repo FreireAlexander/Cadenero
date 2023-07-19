@@ -1,7 +1,8 @@
 import math
 import re
 from .declinations import Declination
-from .tools import isAngle, isBearing
+from .tools import isAngle, isBearing, isValid
+from .tools import decimalToStandard, setSexageximal, setQuadrant
 
 class Angle(Declination):
     """
@@ -20,15 +21,19 @@ class Angle(Declination):
     """
     value = None
 
-    def __init__(self, value, meridian=0):
-        if isAngle(meridian):
-            self.meridian = Declination(meridian)
-            if isAngle(value):
-                super().__init__(value)
-                self.type = 'Angle'
-            else:
-                raise ValueError(f"{value} must be a valid Angle input")
+    def __init__(self, value, orientation=0):
+        if isValid(orientation) and isValid(value):
+            orientation = Declination(orientation)
+            self.orientation = orientation
+            magnitude = Declination(value)
+            super().__init__(value)
+            self.Azimuth_value = decimalToStandard(orientation.Azimuth_value + magnitude.Azimuth_value)
+            self.Azimuth_decimal = f"{round(self.Azimuth_value, 4)}°"
+            self.Azimuth = setSexageximal(self.Azimuth_value)
+            bearing, self.vertical, self.horizontal = setQuadrant(self.Azimuth_value)
+            self.Bearing = f'''{self.vertical} {setSexageximal(bearing)} {self.horizontal}'''
+            self.Bearing_decimal = f"{self.vertical} {round(bearing,4)}° {self.horizontal}"
+            self.Bearing_value = bearing
+            self.type = 'Angle'
         else:
-            raise ValueError(f"{meridian} must be a valid Angle input for reference line")
-
-    
+            raise ValueError(f"{orientation} must be a valid Angle input for reference line")

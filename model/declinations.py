@@ -55,6 +55,22 @@ class Declination:
     
     def __repr__(self):
         return self.Angle
+
+    def __sub__(self, other):
+        if isinstance(other, self.__class__):
+            value = self.value - other.value
+            return Declination(value)
+        elif isinstance(other, (int, float)):
+            resta = self.value - other
+            return Declination(resta)
+    
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            value = self.value + other.value
+            return Declination(value)
+        elif isinstance(other, (int, float)):
+            resta = self.value + other
+            return Declination(resta)
     
     def __eq__(self, other):
         if isinstance(other, (int, float, type(None))):

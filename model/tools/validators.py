@@ -1,6 +1,17 @@
 import re
 from .patterns import *
 
+def isValid(angle):
+    angle = str(angle)
+    flag = False
+    if isAngle(angle):
+        flag = True
+    if isBearing(angle):
+        flag = True
+    if isAzimuth(angle):
+        flag = True 
+    return flag
+
 def isAngle(angle):
     angle = str(angle)
     flag = False

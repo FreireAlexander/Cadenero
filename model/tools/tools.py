@@ -150,7 +150,7 @@ def setAttributes(angle):
     desde, azimuths, rumbos, angulo en sentido de las manecillas del reloj, 
     equivalente en radianes entre otro.
     """
-    numbers = getValues(angle)
+    numbers = getValues(angle)  
     attrs = {
             'sign': '',
             'rotations': 0,
@@ -231,16 +231,20 @@ def setAttributes(angle):
     if isBearing(angle):
         bearing = attrs['value']
         attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(attrs['value'])} {attrs['horizontal']}'''
+        attrs['value'] = attrs['Azimuth_value']
     else:
         if isAngle(angle):
             bearing, attrs['vertical'], attrs['horizontal'] = setQuadrant(standard)
             attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(bearing)} {attrs['horizontal']}'''
+            
         if isAzimuth(angle):
             bearing, attrs['vertical'], attrs['horizontal'] = setQuadrant(standard)
             attrs['Bearing'] = f'''{attrs['vertical']} {setSexageximal(bearing)} {attrs['horizontal']}'''
+            
     
     attrs['Bearing_value'] = bearing
     attrs['Bearing_decimal'] = f"{attrs['vertical']} {round(bearing,4)}° {attrs['horizontal']}"
+    
 
     attrs['Standard'] = attrs['Azimuth']
     attrs['Standard_value'] = standard
@@ -248,5 +252,3 @@ def setAttributes(angle):
     
     
     return attrs
-
-    
