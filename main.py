@@ -8,13 +8,13 @@ def test_1():
 
         try:
             azimuth1 = Azimuth(dato1)
-            azimuth2 = Azimuth(dato2)
+            azimuth2 = Bearing(dato2)
             angulo1 = Angle(dato1, dato2)
             print(f"El angulo1 tiene una magnitud de {angulo1.value}")
             print(f"El angulo1 tiene un azimuth de {angulo1.Azimuth_value}")
             print(f"el azimuth es {angulo1.Azimuth}")
             resta = azimuth1 - azimuth2
-            resta1 = azimuth1-100
+            resta1 = azimuth1- 'S 45 W'
             resta2 = azimuth2-1000
             print(f"Resta entre declinations")
             print(f"{azimuth1} + {azimuth2} = {resta}")

@@ -34,6 +34,7 @@ class Angle(Declination):
             self.Bearing = f'''{self.vertical} {setSexageximal(bearing)} {self.horizontal}'''
             self.Bearing_decimal = f"{self.vertical} {round(bearing,4)}° {self.horizontal}"
             self.Bearing_value = bearing
+            self.Radians = math.radians(self.Azimuth_value)
             self.type = 'Angle'
         else:
             raise ValueError(f"{orientation} must be a valid Angle input for reference line")

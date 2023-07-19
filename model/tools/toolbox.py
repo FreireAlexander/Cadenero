@@ -55,7 +55,7 @@ def setQuadrant(decimal):
 
         return bearing, vertical, horizontal
     else:
-        raise ValueError(f"{angle} is not valid, it must be an Angle or Bearing input") 
+        raise ValueError(f"{decimal} is not valid, it must be an Angle or Bearing input") 
 
 def getAzimuthFromBearing(decimal, horizontal, vertical):
     azimuth = 0 
@@ -74,7 +74,7 @@ def getAzimuthFromBearing(decimal, horizontal, vertical):
     
     return azimuth
 
-def getValues(angle):
+def _getValues(angle):
     """
     Esta función separa los valores de los grados, minutos y segundos 
     digitados por el usuario
@@ -101,18 +101,6 @@ def decimalToStandard(angle):
         spin = abs(angle)//360
         if angle < 0 :
             spin = spin + 1
-            return 360*spin + angle
-        elif angle > 360 :
-            return angle - 360*spin
-        else:
-            return angle
-    except:
-        raise ValueError(f"{angle} is not valid, it must be an intteger or float")
-
-def decimalToStandard2(angle):
-    try:
-        spin = abs(angle)//360
-        if angle < 0 :
             return 360*spin + angle
         elif angle > 360 :
             return angle - 360*spin
@@ -150,7 +138,7 @@ def setAttributes(angle):
     desde, azimuths, rumbos, angulo en sentido de las manecillas del reloj, 
     equivalente en radianes entre otro.
     """
-    numbers = getValues(angle)  
+    numbers = _getValues(angle)  
     attrs = {
             'sign': '',
             'rotations': 0,
@@ -245,7 +233,6 @@ def setAttributes(angle):
     attrs['Bearing_value'] = bearing
     attrs['Bearing_decimal'] = f"{attrs['vertical']} {round(bearing,4)}° {attrs['horizontal']}"
     
-
     attrs['Standard'] = attrs['Azimuth']
     attrs['Standard_value'] = standard
     attrs['Counter'] = setSexageximal(azimuth-360)
