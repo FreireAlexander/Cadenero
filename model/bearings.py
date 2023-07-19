@@ -1,6 +1,6 @@
 import math
 from .declinations import Declination
-from .azimuths import Azimuth
+import model.azimuths
 from .angles import Angle
 from .tools import isBearing
 
@@ -36,7 +36,7 @@ class Bearing(Declination):
         if isinstance(other, (int, float)):
             resta = self.Azimuth_value - other
             return Angle(resta)
-        elif isinstance(other, (self.__class__, Azimuth(0).__class__)):
+        elif isinstance(other, (self.__class__, model.azimuths.Azimuth(0).__class__)):
             value = self.Azimuth_value - other.Azimuth_value
             meridian = other.Azimuth_value
             return Angle(value, meridian)

@@ -38,3 +38,9 @@ class Angle(Declination):
             self.type = 'Angle'
         else:
             raise ValueError(f"{orientation} must be a valid Angle input for reference line")
+
+        def __str__(self):
+            return self.Angle
+
+        def __repr__(self):
+            return f"Angle({self}, {self.orientation})"

@@ -2,6 +2,7 @@ import math
 from .declinations import Declination
 from .tools import isAzimuth, isBearing
 from .angles import Angle
+import model.bearings
 
 class Azimuth(Declination):
     """
@@ -36,7 +37,19 @@ class Azimuth(Declination):
         if isinstance(other, (int, float)):
             resta = self.Azimuth_value - other
             return Angle(resta)
-        elif isinstance(other, (self.__class__)) or isBearing(str(other)):
+        elif isinstance(other, (self.__class__, model.bearings.Bearing('N0').__class__)):
             value = self.Azimuth_value - other.Azimuth_value
-            meridian = other.Azimuth_value
-            return Angle(value, meridian)
+            orientation = other.Azimuth_value
+            return Angle(value, orientation)
+        elif isinstance(other, Angle(0).__class__):
+            if other.orientation.value == 0:
+                print(f"Resta de Azimuth y Angulo con Orientacion en 0")
+                value = self.Azimuth_value - other.Azimuth_value
+                orientation = other.Azimuth_value
+                return Angle(value, orientation)
+            else:
+                raise TypeError(f"{self} and {other} ar not adjacent")
+        else:
+            print(f"Esto me serviria para otros objetos de python")
+            return Angle(0)
+            
