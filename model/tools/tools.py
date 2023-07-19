@@ -55,9 +55,9 @@ def setQuadrant(decimal):
 
         return bearing, vertical, horizontal
     else:
-        raise ValueError(f"{angle} is not valid, it must be an Angle or Bearing input")
+        raise ValueError(f"{angle} is not valid, it must be an Angle or Bearing input") 
 
-def BearingToAzimuth(decimal, horizontal, vertical):
+def getAzimuthFromBearing(decimal, horizontal, vertical):
     azimuth = 0 
     if vertical == 'N' and horizontal == '':
         azimuth = 0
@@ -109,6 +109,18 @@ def decimalToStandard(angle):
     except:
         raise ValueError(f"{angle} is not valid, it must be an intteger or float")
 
+def decimalToStandard2(angle):
+    try:
+        spin = abs(angle)//360
+        if angle < 0 :
+            return 360*spin + angle
+        elif angle > 360 :
+            return angle - 360*spin
+        else:
+            return angle
+    except:
+        raise ValueError(f"{angle} is not valid, it must be an intteger or float")
+
 def setSexageximal(angle):
     if type(angle) in [type(1), type(2.3)]:
         res = {
@@ -125,7 +137,7 @@ def setSexageximal(angle):
         res['minutes_value'] = round((res['degree_value'] - res['degree'])*60, precision)
         res['minutes'] = int(math.floor(res['minutes_value']))
         res['seconds_value']= round((res['minutes_value'] - res['minutes'])*60, precision)
-        res['seconds']= round(res['seconds_value'],3)
+        res['seconds']= round(float(res['seconds_value']),3)
         if angle < 0: res['sign']='-'
         return f'''{res['sign']}{res['degree']}°{res['minutes']}'{res['seconds']}"'''
     else:
@@ -152,7 +164,9 @@ def setAttributes(angle):
             'vertical': '',
             'horizontal': '',
             'Standard': None,
+            'Standard_value': 0,
             'Counter': None,
+            'Counter_value': 0,
             'Angle': None,
             'Angle_decimal': None,
             'value': 0,
@@ -204,7 +218,7 @@ def setAttributes(angle):
         attrs['Azimuth'] = setSexageximal(attrs['value'])
     else:
         if isBearing(angle):
-            azimuth = BearingToAzimuth(attrs['value'], attrs['horizontal'], attrs['vertical'])
+            azimuth = getAzimuthFromBearing(attrs['value'], attrs['horizontal'], attrs['vertical'])
             attrs['Azimuth'] = setSexageximal(azimuth)
         if isAngle(angle):
             azimuth = standard
@@ -229,6 +243,7 @@ def setAttributes(angle):
     attrs['Bearing_decimal'] = f"{attrs['vertical']} {round(bearing,4)}° {attrs['horizontal']}"
 
     attrs['Standard'] = attrs['Azimuth']
+    attrs['Standard_value'] = standard
     attrs['Counter'] = setSexageximal(azimuth-360)
     
     

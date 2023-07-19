@@ -1,28 +1,60 @@
-from model import *
+from model import Angle, Azimuth, Bearing
 import math
 
 def test_1():
     for i in range(6):
-        print(setAttributes(-1)['Azimuth'])
-        angle = input(f"Ingresa el angulo {i+1}: ")
+        angle = input(f"Ingresa el Azimuth 1 intento {i+1}: ")
+        rumbo = input(f"Ingresa el Azimuth 2 intento {i+1}: ")
+
+        try:
+            azimuth1 = Azimuth(angle)
+            azimuth2 = Azimuth(rumbo)
+            resta = azimuth1 - azimuth2
+            resta1 = azimuth1-100
+            resta2 = azimuth2-1000.25
+            print(f"{azimuth1} - {azimuth2} = {resta} con refencia en {resta.meridian} y valor absoluto de {resta.Standard} y azimuth de {resta.Azimuth}")
+            print(f"{azimuth1} - 100 = {resta1} con refencia en {resta1.meridian} y valor absoluto de {resta1.Standard} y azimuth de {resta1.Azimuth}")
+            print(f"{azimuth2} - 1000.25 = {resta2} con refencia en {resta2.meridian} y valor absoluto de {resta2.Standard} y azimuth de {resta2.Azimuth}")
+            print(f"o un Contra reloj de {resta2.Counter}")
+
+        except ValueError:
+            azimuth = 0
+            print(f"No pudo convertirse en un Azimuth porque el valor está equivocado")
+        """
+        try:
+            angulo = Angle(angle)
+            print(angulo)
+        except ValueError:
+            angulo = 0
+            print(f"No pudo convertirse en un angulo porque el valor está equivocado")
         
+        try:
+            azimuth = Azimuth(angle)
+            print(azimuth)
+            print(azimuth.Azimuth)
+            print(f"el standard value es {azimuth.Azimuth_value}")
+        except ValueError:
+            azimuth = 0
+            print(f"No pudo convertirse en un Azimuth porque el valor está equivocado")
         
-        ans = getValues(angle)
-        res = setAttributes(angle)
-        print(f"El valor del angulo es {ans}")
-        print(f"El numero de rotaciones {res['rotations']}")
-        print(f"El angulo crudo en decimales es {res['value']}")
-        print(f"El angulo en sentido de las manecillas del reloj es  {res['Standard']}")
-        print(f"El angulo en contra de las manecillas del reloj es  {res['Counter']}")
-        print(f"El azimuth es {res['Azimuth']}")
-        print(f"El Valor del Azimuth es {res['Azimuth_value']}")
-        print(f"El Azimuth como decimal es {res['Azimuth_decimal']}")
-        print(f"El Rumbo es {res['Bearing']}")
-        print(f"El valor decimal del rumbo es {res['Bearing_value']}")
-        print(f"El Rumbo en formato decimal es {res['Bearing_decimal']}")
-        print(f"El angulo es igual a {res['Angle']}")
-        print(f"El angulo en formato decimal es {res['Angle_decimal']}")
-        print(f"El angulo en radianes es {res['Radians']}")
+        try:
+            bearing = Bearing(rumbo)
+            print(bearing)
+            print(bearing.Azimuth)
+            print(f"el standard value es {bearing.Azimuth_value}")
+        except ValueError:
+            bearing = Bearing('N0')
+            print(f"No pudo convertirse en un Rumbo porque el valor está equivocado")
+
+        print(f"Congruentes {bearing == 0 & bearing > -1}")
+        print(f"Mayor igual que {bearing >= 225}")
+        print(f"Mayor que {bearing > azimuth}")
+        print(f"Distintos {bearing != 225}")
+        print(f"Menor igual que {bearing <= 225}")
+        print(f"Menor que {bearing < azimuth}")
+        print(dir(angulo))
+        """
+
 
 def main():
     test_1()

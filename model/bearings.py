@@ -1,8 +1,9 @@
 import math
+from .declinations import Declination
 from .angles import Angle
 from .tools import isBearing
 
-class Bearing(Angle):
+class Bearing(Declination):
     """
     Estos objetos son Rumbos en toda su definición, 
     Es decir, que es necesario escribir su cuadrante en la notación.
@@ -19,7 +20,13 @@ class Bearing(Angle):
     def __init__(self, value):
         if isBearing(value):
             super().__init__(value)
-            self.type = 'Bearing'               
-        else: 
-            raise ValueError(f'Could not convert {value} to Bearing')
+            self.type = 'Bearing'
+        else:
+            raise ValueError(f"{value} must be an Bearing valid input")
+
+    def __str__(self):
+        return self.Bearing 
+
+    def __repr__(self):
+        return f"Bearing({self.Bearing})"
     

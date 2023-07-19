@@ -1,8 +1,10 @@
 import math
+from .declinations import Declination
+from .tools import isAzimuth, decimalToStandard2
+from .bearings import Bearing
 from .angles import Angle
-from .tools import isAzimuth
 
-class Azimuth(Angle):
+class Azimuth(Declination):
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -17,38 +19,25 @@ class Azimuth(Angle):
     4. numero entero + ' o ° + numero decimal o entero + ° o ' 
     5. numero entero + ' o ° + numero entero [entre 0 a 59] + ° o ' + numero decimal o entero entre 0 y 59 + ' o ° o "
     """
-    value = None
 
     def __init__(self, value):
         if isAzimuth(value):
-            super().__init__(value, 0)
-            self.type = 'Azimuth' 
-            self.degree = Azimuth.setAzimuth(self)              
+            super().__init__(value)
+            self.type = 'Azimuth'
         else:
-            raise ValueError(f'Could not convert {value} to Azimuth')
-    
-    def __add__(self, otherAngle):
-        if otherAngle.type in ['Azimuth', 'Angle']:
-            return Azimuth(str(setDecimal(self.decimal+otherAngle.decimal)))
-        elif type(otherAngle) in [type(1), type(3.14)]:
-            return Azimuth(str(setDecimal(self.decimal+otherAngle)))
-    
-    def __radd__(self, other):
-        if type(other) in [type(1), type(3.14)]:
-            return Azimuth(str(setDecimal(self.decimal+other)))
-        elif other.type in ['Azimuth', 'Angle']:
-            return Azimuth(str(setDecimal(self.decimal+other.decimal)))
+            raise ValueError(f"{value} must be an Azimuth valid input")
 
-    def setAzimuth(self):
-        if self.degree > 360 :
-            return self.degree_standard
-        else:
-            return self.degree
+    def __str__(self):
+        return self.Azimuth 
 
-def setDecimal(decimal):
-    if decimal < 0 :
-        return 360*(abs(decimal)//360+1) + decimal
-    else:
-        return decimal
-    
-    
+    def __repr__(self):
+        return f"Azimut({self.Azimuth})"
+
+    def __sub__(self, other):
+        if isinstance(other, self.__class__):
+            value = self.Azimuth_value - other.Azimuth_value
+            meridian = other.Azimuth_value
+            return Angle(value, meridian)
+        elif isinstance(other, (int, float)):
+            resta = self.Azimuth_value - other
+            return Angle(resta)
