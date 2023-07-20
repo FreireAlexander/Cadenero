@@ -1,10 +1,9 @@
 import math
-from .declinations import Declination
-import model.azimuths
-from .angles import Angle
-from .tools import isBearing
+from .tools import isBearing, setAttributes, decimalToStandard
+import model.angles
 
-class Bearing(Declination):
+
+class Bearing:
     """
     Estos objetos son Rumbos en toda su definición, 
     Es decir, que es necesario escribir su cuadrante en la notación.
@@ -21,24 +20,59 @@ class Bearing(Declination):
     """
     def __init__(self, value):
         if isBearing(value):
-            super().__init__(value)
-            self.type = 'Bearing'
+            attrs = setAttributes(value)
+            self.sign               = attrs['sign']
+            self.rotations          = attrs['rotations']
+            self.rotations_value    = attrs['rotations_value']
+            self.degree_decimals    = attrs['degree_decimals']
+            self.degree             = attrs['degree']
+            self.minutes_decimals   = attrs['minutes_decimals']
+            self.minutes            = attrs['minutes']
+            self.seconds_decimals   = attrs['seconds_decimals']
+            self.seconds            = attrs['seconds']
+            self.vertical           = attrs['vertical']
+            self.horizontal         = attrs['horizontal']
+            self.Standard           = attrs['Standard']
+            self.Standard_value     = attrs['Standard_value']
+            self.Counter            = attrs['Counter']
+            self.Angle              = attrs['Angle']
+            self.Angle_decimal      = attrs['Angle_decimal']
+            self.value              = attrs['value']
+            self.Bearing            = attrs['Bearing']
+            self.Bearing_decimal    = attrs['Bearing_decimal']
+            self.Bearing_value      = attrs['Bearing_value']
+            self.Azimuth            = attrs['Azimuth']
+            self.Azimuth_decimal    = attrs['Azimuth_decimal']
+            self.Azimuth_value      = attrs['Azimuth_value']
+            self.Radians            = attrs['Radians']
+            self.type               = 'Angle'
         else:
-            raise ValueError(f"{value} must be an Bearing valid input")
+            raise ValueError(f"{value} must be a valid Angle or Bearing, even integer or float are allowed")
+    
+    def __repr__(self):
+        return f"Angle({self.Angle})"
 
     def __str__(self):
-        return self.Bearing 
+        return self.Angle
 
-    def __repr__(self):
-        return f"Bearing({self.Bearing})"
-    
-    def __sub__(self, other):
-        if isinstance(other, (int, float)):
-            resta = self.Azimuth_value - other
-            return Angle(resta)
-        elif isinstance(other, (self.__class__, model.azimuths.Azimuth(0).__class__)):
-            value = self.Azimuth_value - other.Azimuth_value
-            meridian = other.Azimuth_value
-            return Angle(value, meridian)
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            raise TypeError("It has not sense add Azimuth with Azimuth")
+        elif isinstance(other, model.angles.Angle(0).__class__):
+            res = other.value + self.Azimuth_value
+            print(f"Desde Bearing \n El valor de Res para la suma de angulo y bearing es {res}")
+            res = setAttributes(decimalToStandard(res))['Bearing']
+            print(f"Supuesto Rumbo")
+            return Bearing(res)
         
     
+    def __radd__(self, other):
+        if isinstance(other, self.__class__):
+            raise TypeError("It has not sense add Azimuth with Azimuth")
+        elif isinstance(other, model.angles.Angle(0).__class__):
+            res = other.value + self.Azimuth_value
+            print(f"Desde Bearing \n El valor de Res para la suma de angulo y bearing es {res}")
+            res = setAttributes(decimalToStandard(res))['Bearing']
+            print(f"Supuesto Rumbo")
+            return Bearing(res)
+        

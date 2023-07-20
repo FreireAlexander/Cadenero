@@ -1,10 +1,10 @@
 import math
-from .declinations import Declination
+import model.angles
 from .tools import isAzimuth, isBearing
-from .angles import Angle
-import model.bearings
+from .tools import decimalToStandard
+from .deflections import Deflection
 
-class Azimuth(Declination):
+class Azimuth(model.angles.Angle):
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -27,29 +27,28 @@ class Azimuth(Declination):
         else:
             raise ValueError(f"{value} must be an Azimuth valid input")
 
-    def __str__(self):
-        return self.Azimuth 
-
     def __repr__(self):
         return f"Azimut({self.Azimuth})"
 
-    def __sub__(self, other):
-        if isinstance(other, (int, float)):
-            resta = self.Azimuth_value - other
-            return Angle(resta)
-        elif isinstance(other, (self.__class__, model.bearings.Bearing('N0').__class__)):
-            value = self.Azimuth_value - other.Azimuth_value
-            orientation = other.Azimuth_value
-            return Angle(value, orientation)
-        elif isinstance(other, Angle(0).__class__):
-            if other.orientation.value == 0:
-                print(f"Resta de Azimuth y Angulo con Orientacion en 0")
-                value = self.Azimuth_value - other.Azimuth_value
-                orientation = other.Azimuth_value
-                return Angle(value, orientation)
-            else:
-                raise TypeError(f"{self} and {other} ar not adjacent")
-        else:
-            print(f"Esto me serviria para otros objetos de python")
-            return Angle(0)
-            
+    def __str__(self):
+        return self.Azimuth
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            raise TypeError("It has not sense add Azimuth with Azimuth")
+        elif isinstance(other, model.angles.Angle(0).__class__):
+            res = self.value + other.value
+            return Azimuth(decimalToStandard(res))
+        elif isinstance(other, (int, float)):
+            res = self.value + other
+            return Azimuth(decimalToStandard(res))
+    
+    def __radd__(self, other):
+        if isinstance(other, self.__class__):
+            raise TypeError("It has not sense add Azimuth with Azimuth")
+        elif isinstance(other, model.angles.Angle(0).__class__):
+            res = other.value + self.value
+            return Azimuth(decimalToStandard(res))
+        elif isinstance(other, (int, float)):
+            res = other + self.value 
+            return Azimuth(decimalToStandard(res))         
