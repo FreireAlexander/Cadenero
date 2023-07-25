@@ -1,10 +1,10 @@
 import math
 import re
-from .angles import Angle
+import model.angles
 from .tools import isAngle, isBearing, isValid
 from .tools import decimalToStandard, setSexageximal, setQuadrant
 
-class Deflection(Angle):
+class Deflection(model.angles.Angle):
     """
     Estos objetos son ángulos en el sentido de las manecillas del reloj a partir del Norte, 
     Es decir, son exclusivamentes azimutes por el momento, pueden ser escritos de la sgte manera.
@@ -23,9 +23,9 @@ class Deflection(Angle):
 
     def __init__(self, value, orientation=0):
         if isValid(orientation) and isValid(value):
-            orientation = Angle(orientation)
+            orientation = model.angles.Angle(orientation)
             self.orientation = orientation
-            magnitude = Angle(value)
+            magnitude = model.angles.Angle(value)
             super().__init__(value)
             self.Azimuth_value = decimalToStandard(orientation.Azimuth_value + magnitude.Azimuth_value)
             self.Azimuth_decimal = f"{round(self.Azimuth_value, 4)}°"
@@ -35,7 +35,7 @@ class Deflection(Angle):
             self.Bearing_decimal = f"{self.vertical} {round(bearing,4)}° {self.horizontal}"
             self.Bearing_value = bearing
             self.Radians = math.radians(self.Azimuth_value)
-            self.type = 'Angle'
+            self.type = 'Deflection'
         else:
             raise ValueError(f"{orientation} must be a valid Angle input for reference line")
 

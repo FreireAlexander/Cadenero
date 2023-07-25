@@ -1,8 +1,9 @@
 import math
 import model.angles
+import model.deflections as deflection 
 from .tools import isAzimuth, isBearing
 from .tools import decimalToStandard
-from .deflections import Deflection
+
 
 class Azimuth(model.angles.Angle):
     """
@@ -35,20 +36,44 @@ class Azimuth(model.angles.Angle):
 
     def __add__(self, other):
         if isinstance(other, self.__class__):
-            raise TypeError("It has not sense add Azimuth with Azimuth")
+            res = self.value + other.value
+            return model.angles.Angle(res)
         elif isinstance(other, model.angles.Angle(0).__class__):
             res = self.value + other.value
             return Azimuth(decimalToStandard(res))
         elif isinstance(other, (int, float)):
             res = self.value + other
             return Azimuth(decimalToStandard(res))
+        else:
+            raise TypeError(f"It is not possible to complete {self.__class__} + {other.__class__}") 
     
     def __radd__(self, other):
         if isinstance(other, self.__class__):
-            raise TypeError("It has not sense add Azimuth with Azimuth")
+            res = self.value + other.value
+            return model.angles.Angle(res)
         elif isinstance(other, model.angles.Angle(0).__class__):
             res = other.value + self.value
             return Azimuth(decimalToStandard(res))
         elif isinstance(other, (int, float)):
             res = other + self.value 
-            return Azimuth(decimalToStandard(res))         
+            return Azimuth(decimalToStandard(res))
+        else:
+            raise TypeError(f"It is not possible to complete {other.__class__} + {self.__class__}") 
+
+    def __sub__(self, other):
+        if isinstance(other, self.__class__):
+            print("Angulod e azimuth ")
+            value = self.value - other.value
+            return deflection.Deflection(value, self.value)
+        elif isinstance(other, model.bearings.Bearing('N0').__class__):
+            res = self.value - other.Azimuth_value
+            return model.angles.Angle(res)
+        elif isinstance(other, model.angles.Angle('0').__class__):
+            print("Entre desde Azimuith ....")
+            res = self.value - other.value
+            return model.angles.Angle(res)
+        elif isinstance(other, (int, float)):
+            res = self.value - other
+            return model.angles.Angle(res)
+        else:
+            raise TypeError(f"It is not possible add {other.__class__} - {self.__class__}")     

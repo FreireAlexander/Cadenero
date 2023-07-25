@@ -66,9 +66,7 @@ class Angle:
             return Angle(value)
         elif isinstance(other, model.bearings.Bearing('N0').__class__):
             res = other.value + self.Azimuth_value
-            print(f"Desde Angle \n El valor de Res para la suma de angulo y bearing es {res}")
             res = setAttributes(decimalToStandard(res))['Bearing']
-            print(f"Supuesto Rumbo")
             return model.bearings.Bearing(res)
         elif isinstance(other, model.azimuths.Azimuth(0).__class__):
             res = self.value + other.value
@@ -76,6 +74,8 @@ class Angle:
         elif isinstance(other, (int, float)):
             res = self.value + other
             return Angle(res)
+        else:
+            raise TypeError(f"It is not possible to complete {self.__class__} + {other.__class__}")
     
     def __radd__(self, other):
         if isinstance(other, self.__class__):
@@ -83,9 +83,7 @@ class Angle:
             return Angle(value)
         elif isinstance(other, model.bearings.Bearing('N0').__class__):
             res = other.value + self.Azimuth_value
-            print(f"Desde Angle \n El valor de Res para la suma de angulo y bearing es {res}")
             res = setAttributes(decimalToStandard(res))['Bearing']
-            print(f"Supuesto Rumbo")
             return model.bearings.Bearing(res)
         elif isinstance(other, model.azimuths.Azimuth(0).__class__):
             res = self.value + other.value
@@ -93,19 +91,41 @@ class Angle:
         elif isinstance(other, (int, float)):
             res = other + self.value 
             return Angle(res)
+        else:
+            raise TypeError(f"It is not possible to complete {other.__class__} + {self.__class__}")
+
+    def __rsub__(self, other):
+        if isinstance(other, self.__class__):
+            value = other.value - self.value 
+            return Angle(value)
+        elif isinstance(other, model.bearings.Bearing('N0').__class__):
+            print("Entre aqui....")
+            res = other.Azimuth_value - self.value
+            return Angle(res)
+        elif isinstance(other, model.azimuths.Azimuth('0').__class__):
+            print("Entra aaqui ")
+            res = other.value - self.value
+            return Angle(res)
+        elif isinstance(other, (int, float)):
+            res = other - self.value 
+            return Angle(res)
+        else:
+            raise TypeError(f"It is not possible to complete {other.__class__} - {self.__class__}")
 
     def __sub__(self, other):
         if isinstance(other, self.__class__):
             value = self.value - other.value
             return Angle(value)
+        elif isinstance(other, model.bearings.Bearing('N0').__class__):
+            res = self.value - other.Azimuth_value
+            return Angle(res)
+        elif isinstance(other, model.azimuths.Azimuth('0').__class__):
+            res = self.value - other.value
+            return Angle(res)
         elif isinstance(other, (int, float)):
             res = self.value - other
             return Angle(res)
-
-    def __rsub__(self, other):
-        if isinstance(other, self.__class__):
-            value = other.value - self.value
-            return Angle(value)
-        elif isinstance(other, (int, float)):
-            res = other - self.value
-            return Angle(res)
+        else:
+            raise TypeError(f"It is not possible to complete {other.__class__} - {self.__class__}")
+        
+    
