@@ -1,2 +1,0 @@
-pyemenu==1.0.1
-readchar==4.0.5
